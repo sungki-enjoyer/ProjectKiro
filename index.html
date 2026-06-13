@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movies Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header -->
+    <header>
+      <div class="header-inner">
+        <h1>🎬 Movies Dashboard</h1>
+        <div class="header-right">
+          <div id="status-dot" class="dot dot-idle"></div>
+          <span id="status-text" class="status-text">Loading...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Empty state -->
+    <div id="empty-state">
+      <div class="empty-box">
+        <div class="empty-icon">🎬</div>
+        <h2>No data found</h2>
+        <p>Add a <strong>.csv</strong> file to the <strong>data/</strong> folder in the repository.</p>
+      </div>
+    </div>
+
+    <!-- Dashboard content -->
+    <main id="dashboard" class="hidden">
+
+      <!-- Scorecards -->
+      <section class="scorecards">
+        <div class="card">
+          <div class="card-label">Total Movies</div>
+          <div class="card-value" id="sc-total">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Total Popularity</div>
+          <div class="card-value" id="sc-popularity">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avg Vote</div>
+          <div class="card-value" id="sc-rating">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avg Budget</div>
+          <div class="card-value" id="sc-budget">—</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Avg Revenue</div>
+          <div class="card-value" id="sc-revenue">—</div>
+        </div>
+      </section>
+
+      <!-- Filters -->
+      <section class="filters">
+        <input type="text"   id="search"        placeholder="🔍  Search by title, cast, director…" />
+        <select id="genre-filter">  <option value="">All Genres</option>   </select>
+        <select id="lang-filter">   <option value="">All Languages</option></select>
+        <select id="status-filter"> <option value="">All Statuses</option> </select>
+        <select id="sort-filter">
+          <option value="">Sort: Default</option>
+          <option value="rating-desc">Rating ↓</option>
+          <option value="rating-asc">Rating ↑</option>
+          <option value="year-desc">Newest First</option>
+          <option value="year-asc">Oldest First</option>
+          <option value="popularity-desc">Most Popular</option>
+          <option value="revenue-desc">Revenue ↓</option>
+          <option value="title-asc">Title A–Z</option>
+        </select>
+        <input type="number" id="year-from" placeholder="Year from" min="1900" max="2100" />
+        <input type="number" id="year-to"   placeholder="Year to"   min="1900" max="2100" />
+        <button id="clear-filters">Clear Filters</button>
+      </section>
+
+      <!-- Results count -->
+      <div class="results-bar">
+        Showing <span id="results-count">0</span> movies
+      </div>
+
+      <!-- Movie grid -->
+      <section id="movie-grid" class="movie-grid"></section>
+
+    </main>
+  </div>
+
+  <!-- Movie detail modal -->
+  <div id="modal-overlay" class="hidden">
+    <div id="modal">
+      <button id="modal-close">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
