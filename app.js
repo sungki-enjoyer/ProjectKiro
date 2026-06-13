@@ -41,26 +41,29 @@ function setStatus(state, text) {
   statusText.textContent = text;
 }
 
-// ── Boot: load data/index.json then fetch each CSV ──────────
+// ── CSV files to load from the data/ folder ─────────────────
+// To add more files, just add their names to this array.
+// e.g. ['movies.csv', 'movies2.csv']
+const CSV_FILES = [
+  'movies.csv'
+];
+
+// ── Boot: fetch all CSV files ────────────────────────────────
 async function init() {
   setStatus('loading', 'Loading data…');
   try {
-    const res   = await fetch('data/index.json');
-    if (!res.ok) throw new Error('index.json not found');
-    const files = await res.json(); // ["movies.csv", "more.csv", …]
-
-    if (!files.length) {
-      setStatus('idle', 'No CSV files in data folder');
-      return;
-    }
-
     const results = await Promise.all(
-      files.map(name => fetch(`data/${name}`).then(r => r.text()).then(parseCSV).catch(() => []))
+      CSV_FILES.map(name =>
+        fetch(`data/${name}`)
+          .then(r => { if (!r.ok) throw new Error(`${name} not found`); return r.text(); })
+          .then(parseCSV)
+          .catch(() => [])
+      )
     );
     allMovies = results.flat().filter(m => m.title || m.original_title);
 
     if (!allMovies.length) {
-      setStatus('idle', 'Files loaded but no valid rows found');
+      setStatus('idle', 'No data found — upload a CSV to the data/ folder');
       return;
     }
 
@@ -71,7 +74,7 @@ async function init() {
     dashboard.classList.remove('hidden');
 
   } catch (err) {
-    setStatus('error', 'Could not load data — check data/index.json exists');
+    setStatus('error', 'Could not load data');
     console.error(err);
   }
 }
